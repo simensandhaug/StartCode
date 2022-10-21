@@ -1,5 +1,4 @@
-from enum import unique
-from statistics import mode
+from unittest.util import _MAX_LENGTH
 from django.db import models
 
 class Bouy(models.Model):
@@ -8,7 +7,7 @@ class Bouy(models.Model):
 
 class Sensor(models.Model):
     s_id = models.IntegerField()
-    s_type = models.IntegerField()
+    s_type = models.CharField(max_length=40)
     bouy = models.ForeignKey(Bouy, on_delete=models.CASCADE)
     
 class Measurement(models.Model):

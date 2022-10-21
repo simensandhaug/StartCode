@@ -20,5 +20,7 @@ from bouys.views import *
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('bouys/', Bouys.as_view()),
-    path('sensors/', Sensors.as_view())
+    path('sensors/', Sensors.as_view()),
+    path('sensors/<int:pk>/', Sensor.as_view()),
+    path('bouys/<int:pk>/', Bouy.as_view())
 ]
