@@ -1,4 +1,4 @@
-from .models import *
+import models
 from .serializers import *
 from django.http import Http404
 from rest_framework.views import APIView
@@ -7,11 +7,9 @@ from rest_framework import status
 
 
 class Bouys(APIView):
-    """
-    List all snippets, or create a new snippet.
-    """
+
     def get(self, request, format=None):
-        bouys = Bouy.objects.all()
+        bouys = models.Bouy.objects.all()
         serializer = BouySerializer(bouys, many=True)
         return Response(serializer.data)
 
@@ -23,11 +21,9 @@ class Bouys(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class Sensors(APIView):
-    """
-    List all snippets, or create a new snippet.
-    """
+
     def get(self, request, format=None):
-        sensors = Sensor.objects.all()
+        sensors = models.Sensor.objects.all()
         serializer = SensorSerializer(sensors, many=True)
         return Response(serializer.data)
 
@@ -37,3 +33,15 @@ class Sensors(APIView):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+class Bouy(APIView):
+    def get(self, request, pk, format=None):
+        bouy = models.Bouy.objects.get(pk=pk)
+        serializer = BouySerializer(bouy, many=True)
+        return Response(serializer.data)
+
+class Sensor(APIView):
+    def get(self, request, pk, format=None):
+        sensor = models.Sensor.objects.get(pk=pk)
+        serializer = BouySerializer(sensor, many=True)
+        return Response(serializer.data)
