@@ -47,13 +47,13 @@ class BuoySerializer(serializers.ModelSerializer):
         print(data)
         return Buoy.objects.create(**data)
         
-class MeasurementSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Measurement
-        fields = '__all__'
+# class MeasurementSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = Measurement
+#         fields = '__all__'
         
-    def create(self, data):
-        return Measurement.objects.create(**data)
+#     def create(self, data):
+#         return Measurement.objects.create(**data)
 
 class LightMeasurementSerializer(serializers.ModelSerializer):
     class Meta:
