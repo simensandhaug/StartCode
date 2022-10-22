@@ -1,6 +1,6 @@
-# BadBuoy-solution
+# BadBuoys-solution
 
-Our solution writes metadata and sensor-measurements into the database from a file that is posted via HTTP to the server.
+Our solution writes metadata and sensor-measurements into the database from a file that is posted via HTTP to the server and provides a REST-API for querying the data for easy frontend integration.
 
 ## Install Requirements
 
