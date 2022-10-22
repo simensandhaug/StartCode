@@ -15,6 +15,12 @@ python -m venv venv
 venv/bin/activate
 ```
 
+## Initialize Database
+In `backend`
+```bash
+sqlite3 db.sqlite3 < fill_database.sql
+```
+
 ## Add new sensor-types
 
 ### Example
