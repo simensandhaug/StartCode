@@ -8,6 +8,13 @@ Our solution writes metadata and sensor-measurements into the database from a fi
 pip install -r requirements.txt
 ```
 
+## Activate Virtual Environment
+
+```bash
+python -m venv venv
+venv/bin/activate
+```
+
 ## Add new sensor-types
 
 ### Example
