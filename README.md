@@ -10,9 +10,10 @@ pip install -r requirements.txt
 
 ## Add new sensor-types
 
+### Example
+
 - In `models.py` add the Measurement model
 
-### Example
 ```python
 from django.db import models
 
