@@ -8,10 +8,14 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from django.db.models import Prefetch, Q
+from urllib.parse import unquote
 
 def get_sensors(request):
-    start = request.data['start_date_time'] if 'start_date_time' in request.data else datetime.min
-    end = request.data['end_date_time'] if 'end_date_time' in request.data else datetime.max
+    start = request.query_params['start_date_time'] if 'start_date_time' in request.query_params else datetime.min
+    end = request.query_params['end_date_time'] if 'end_date_time' in request.query_params else datetime.max
+    start = unquote(start)
+    end = unquote(end)
+    print(start, end)
     return Sensor.objects.prefetch_related(
         Prefetch('light_measurements', queryset=LightMeasurement.objects.filter(Q(time_stamp__gte=start) & Q(time_stamp__lte=end)), to_attr='filtered_light_measurements'),
         Prefetch('buoy_measurements', queryset=BuoyMeasurement.objects.filter(Q(time_stamp__gte=start) & Q(time_stamp__lte=end)), to_attr='filtered_buoy_measurements'),
