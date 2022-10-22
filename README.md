@@ -75,4 +75,4 @@ urlpatterns = [
 ]
 ```
 
-> Remember to make migrations and migrate the database
+> Remember to make migrations and migrate the database afterwards
