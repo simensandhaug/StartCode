@@ -2,13 +2,13 @@ import re
 import pandas as pd
 from datetime import datetime, timedelta
 
-from sensorparser import SensorParser
+from parsers.sensorparser import SensorParser
 
 class PressureSensorParser(SensorParser):
     def __init__(self):
         super().__init__()
     
-    def parseData(self, file, metadata):
+    def parseData(self, data, metadata):
         # Convert lines to a list like this:
         '''
         [
@@ -25,8 +25,7 @@ class PressureSensorParser(SensorParser):
             ...
         ]
         '''
-        data = file.readlines();
-        startTimes = [self.parseDate(re.search("(?<=:).*", s).group()) for s in data[0::2]]
+        startTimes = [self.parseDate(s) for s in data[0::2]]
         measurementSets = [
             re.findall(r"(?<=\$)[^(\\r\\n)]*(?=\*..\\r\\n)|b''",m)
             for m in data[1::2]]
@@ -38,19 +37,26 @@ class PressureSensorParser(SensorParser):
         for startTime, measurements in measurementSetsDividedInPairs:
             for i, measurement in enumerate(measurements):
                 currentTime = startTime + i * timedelta(seconds=1/float(metadata["frequency"]))
-                print(currentTime)
-                parsedMeasurement = []
+                parsedMeasurement = {"time_stamp": currentTime}
                 if measurement[0] == "b''":
-                    parsedMeasurement = [currentTime, None ,None,None]
+                    parsedMeasurement["depth"] = None
+                    parsedMeasurement["pressure"] = None
+                    parsedMeasurement["temperature"] = None
                 else:
                     splitISDP = measurement[0].split(",")
-                    parsedMeasurement = [currentTime] + [float(m) for m in splitISDP[1::2]]
+                    parsedMeasurement["depth"] = float(splitISDP[1])
+                    parsedMeasurement["pressure"] = float(splitISDP[3])
+                    parsedMeasurement["temperature"] = float(splitISDP[5])
                 if measurement[1] == "b''":
-                    parsedMeasurement += [None, None, None]
+                    parsedMeasurement["heading"] = None
+                    parsedMeasurement["pitch"] = None
+                    parsedMeasurement["roll"] = None
                 else:
                     splitISHPR = measurement[1].split(",")
-                    parsedMeasurement += [float(m) for m in splitISHPR[1:]]
+                    parsedMeasurement["heading"] = float(splitISHPR[1])
+                    parsedMeasurement["pitch"] = float(splitISHPR[2])
+                    parsedMeasurement["roll"] = float(splitISHPR[3])
                 parsedData.append(parsedMeasurement)
-        return pd.DataFrame(parsedData, columns=["time", "depth in meters", "absolute pressure in bar", "temperature in degrees Celsius", "heading in degrees", "pitch in degrees", "roll in degrees"])
+        return parsedData
 
 

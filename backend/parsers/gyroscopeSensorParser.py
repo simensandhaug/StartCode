@@ -2,7 +2,7 @@ import pandas as pd
 from datetime import timedelta
 import ast
 
-from sensorparser import SensorParser
+from parsers.sensorparser import SensorParser
 
 class GyroscopeSensorParser(SensorParser):
     def __init__(self):
@@ -12,7 +12,7 @@ class GyroscopeSensorParser(SensorParser):
         isdpt, depth, _, pressure, _ = line[0].split(",")
         return (isdpt, float(depth), float(pressure))
     
-    def parseData(self, file, metadata):
+    def parseData(self, data, metadata):
         # Convert lines to a list like this:
         '''
         [
@@ -29,7 +29,6 @@ class GyroscopeSensorParser(SensorParser):
             ...
         ]
         '''
-        data = file.readlines();
         total_lines = len(data)
         i = 0
         measurementPairs = []
