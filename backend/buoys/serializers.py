@@ -2,8 +2,7 @@ from dataclasses import field
 from rest_framework import serializers
 from .models import *
 
-class BuoySerializer(serializers.Serializer):
-    b_id = serializers.IntegerField()
+class BuoySerializer(serializers.ModelSerializer):
     class Meta:
         model = Buoy
         fields = '__all__'
@@ -12,7 +11,7 @@ class BuoySerializer(serializers.Serializer):
         print(data)
         return Buoy.objects.create(**data)
         
-class SensorSerializer(serializers.Serializer):
+class SensorSerializer(serializers.ModelSerializer):
     class Meta:
         model = Sensor
         fields = '__all__'
@@ -20,7 +19,7 @@ class SensorSerializer(serializers.Serializer):
     def create(self, data):
         return Sensor.objects.create(**data)
         
-class MeasurementSerializer(serializers.Serializer):
+class MeasurementSerializer(serializers.ModelSerializer):
     class Meta:
         model = Measurement
         fields = '__all__'
@@ -28,7 +27,7 @@ class MeasurementSerializer(serializers.Serializer):
     def create(self, data):
         return Measurement.objects.create(**data)
 
-class LightMeasurementSerializer(serializers.Serializer):
+class LightMeasurementSerializer(serializers.ModelSerializer):
     class Meta:
         model = LightMeasurement
         fields = '__all__'
@@ -36,7 +35,7 @@ class LightMeasurementSerializer(serializers.Serializer):
     def create(self, data):
         return LightMeasurement.objects.create(**data)
         
-class EchoLocationMeasurementSerializer(serializers.Serializer):
+class EchoLocationMeasurementSerializer(serializers.ModelSerializer):
     class Meta:
         model = EchoLocationMeasurement
         fields = '__all__'
@@ -44,7 +43,7 @@ class EchoLocationMeasurementSerializer(serializers.Serializer):
     def create(self, data):
         return EchoLocationMeasurement.objects.create(**data)
         
-class BuoyMeasurementSerializer(serializers.Serializer):
+class BuoyMeasurementSerializer(serializers.ModelSerializer):
     class Meta:
         model = BuoyMeasurement
         fields = '__all__'
