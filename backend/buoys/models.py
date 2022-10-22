@@ -10,13 +10,19 @@ class Sensor(models.Model):
     s_type = models.CharField(max_length=40)
     s_sample_frequency = models.FloatField()
     buoy = models.ForeignKey(Buoy, to_field="b_id", related_name="sensors", on_delete=models.CASCADE)
+
+class SensorMetadata(models.Model):
+    s_id = models.ForeignKey(Sensor, to_field="s_id", related_name="metadata", on_delete=models.CASCADE)
+    s_last_calibrated = models.DateTimeField()
+    s_calibration_error = models.FloatField()
     
 class BuoyMeasurement(models.Model):
-    sensor = models.ForeignKey(Sensor, related_name="buoy_measurements", on_delete=models.CASCADE)
+    buoy = models.ForeignKey(Buoy, related_name="buoy_measurements", on_delete=models.CASCADE)
     time_stamp = models.DateTimeField()
     altitude = models.FloatField()
     latitude = models.FloatField()
     longitude = models.FloatField()
+    battery = models.FloatField()
     
 class LightMeasurement(models.Model):
     sensor = models.ForeignKey(Sensor, related_name="light_measurements", on_delete=models.CASCADE)

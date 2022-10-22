@@ -1,3 +1,4 @@
+from curses import meta
 from datetime import datetime
 import re
 from urllib import request
@@ -131,20 +132,33 @@ class PressureMeasurementList(APIView):
 class BuoyUpload(APIView):
     def post(self, request, pk, format=None):
         for key in request.data.keys():
-            if key == "ekkolodd":
-                metadata, data = SonarSensorParser().parseFile(request.data.get(key))
-                serializer = EchoLocationMeasurementSerializer(data=data, many=True)
-                print(data)
+            if key == "metadata":
+                file = request.data.get(key)
+                headers = [s.strip() for s in file.readline().decode("utf-8").split(",")] + ["time_stamp"]
+                values = [s.strip() for s in file.readline().decode("utf-8").split(",")] + [datetime.now()]
+                metadataDict = dict(zip(headers, values)) 
+                metadataDict["buoy"] = int(pk)
+                serializer = BuoyMeasurementSerializer(data=metadataDict)
                 if serializer.is_valid():
                     serializer.save()
                 else:
                     print(serializer.errors)
-            if key == "gyroskop":
+            if key == "ekkolodd":
+                metadata, data = SonarSensorParser().parseFile(request.data.get(key))
+                frequency = Sensor.objects.get(s_id=metadata["id"]).s_sample_frequency
+                metadata["frequency"] = frequency
+                serializer = EchoLocationMeasurementSerializer(data=data, many=True)
+                if serializer.is_valid():
+                    serializer.save()
+                else:
+                    print(serializer.errors)
+            elif key == "gyroskop":
                 metadata, data = GyroscopeSensorParser().parseFile(request.data.get(key))
-            if key == "trykksensor":
+            elif key == "trykksensor":
                 metadata, data = PressureSensorParser().parseFile(request.data.get(key))
+                frequency = Sensor.objects.get(s_id=metadata["id"]).s_sample_frequency
+                metadata["frequency"] = frequency
                 serializer = PressureMeasurementSerializer(data=data, many=True)
-                print(data)
                 if serializer.is_valid():
                     serializer.save()
                 else:

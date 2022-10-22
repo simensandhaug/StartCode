@@ -52,6 +52,13 @@ class BuoyMeasurementSerializer(serializers.ModelSerializer):
         
     def create(self, data):
         return BuoyMeasurement.objects.create(**data)
+class SensorMetadataSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = SensorMetadata
+        fields = '__all__'
+        
+    def create(self, data):
+        return SensorMetadata.objects.create(**data)
     
 class SensorSerializer(serializers.ModelSerializer):
     
