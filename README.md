@@ -82,4 +82,5 @@ urlpatterns = [
 ]
 ```
 
+# :warning:
 > Remember to make migrations and migrate the database afterwards
