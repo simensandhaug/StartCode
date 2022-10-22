@@ -20,6 +20,7 @@ def get_sensors(request):
     end = unquote(end)
     print(start, end)
     return Sensor.objects.prefetch_related(
+        Prefetch('pressure_measurements', queryset=PressureMeasurement.objects.filter(Q(time_stamp__gte=start) & Q(time_stamp__lte=end)), to_attr='filtered_pressure_measurements'),
         Prefetch('light_measurements', queryset=LightMeasurement.objects.filter(Q(time_stamp__gte=start) & Q(time_stamp__lte=end)), to_attr='filtered_light_measurements'),
         Prefetch('buoy_measurements', queryset=BuoyMeasurement.objects.filter(Q(time_stamp__gte=start) & Q(time_stamp__lte=end)), to_attr='filtered_buoy_measurements'),
         Prefetch('echo_measurements', queryset=EchoLocationMeasurement.objects.filter(Q(time_stamp__gte=start) & Q(time_stamp__lte=end)), to_attr='filtered_echo_measurements')

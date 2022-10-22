@@ -22,6 +22,7 @@ class LightMeasurement(models.Model):
     sensor = models.ForeignKey(Sensor, related_name="light_measurements", on_delete=models.CASCADE)
     time_stamp = models.DateTimeField()
     light_level = models.FloatField()
+    
 class PressureMeasurement(models.Model):
     sensor = models.ForeignKey(Sensor, related_name="pressure_measurements", on_delete=models.CASCADE)
     time_stamp = models.DateTimeField()
