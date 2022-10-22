@@ -18,7 +18,7 @@ class SensorParser(ABC):
             return (metadataFrame, self.parseData(file,metadataDict))
     
     def parseDate(self, date: str) -> datetime:
-        return datetime.strptime(date.strip(), '%a, %d %b %Y %H:%M:%S %z')
+        return datetime.strptime(date.strip(), 'sampling started at :%a, %d %b %Y %H:%M:%S %z')
 
     @abstractmethod
     def parseData(self, file:TextIOWrapper, metadata)->pd.DataFrame:
