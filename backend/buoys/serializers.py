@@ -37,6 +37,14 @@ class EchoLocationMeasurementSerializer(serializers.ModelSerializer):
         
     def create(self, data):
         return EchoLocationMeasurement.objects.create(**data)
+class PressureMeasurementSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = PressureMeasurement
+        fields = '__all__'
+        extra_fields = ['sensor', 'time_stamp']
+        
+    def create(self, data):
+        return PressureMeasurement.objects.create(**data)
         
 class BuoyMeasurementSerializer(serializers.ModelSerializer):
     class Meta:

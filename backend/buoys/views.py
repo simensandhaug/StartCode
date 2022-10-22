@@ -1,6 +1,9 @@
 from datetime import datetime
 import re
 from urllib import request
+from parsers.gyroscopeSensorParser import GyroscopeSensorParser
+from parsers.pressureSensorParser import PressureSensorParser
+from parsers.sonarSensorParser import SonarSensorParser
 from .models import Buoy, Sensor
 from .serializers import *
 from django.http import Http404
@@ -112,3 +115,40 @@ class EchoLocationMeasurementList(APIView):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class PressureMeasurementList(APIView):
+    
+    def get(self, request, format=None):
+        echo_location_measurements = PressureMeasurement.objects.all()
+        serializer = PressureMeasurementSerializer(echo_location_measurements, many=True)
+        return Response(serializer.data)
+
+    def post(self, request, format=None):
+        serializer = PressureMeasurementSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class BuoyUpload(APIView):
+    def post(self, request, pk, format=None):
+        for key in request.data.keys():
+            if key == "ekkolodd":
+                metadata, data = SonarSensorParser().parseFile(request.data.get(key))
+                serializer = EchoLocationMeasurementSerializer(data=data, many=True)
+                print(data)
+                if serializer.is_valid():
+                    serializer.save()
+                else:
+                    print(serializer.errors)
+            if key == "gyroskop":
+                metadata, data = GyroscopeSensorParser().parseFile(request.data.get(key))
+            if key == "trykksensor":
+                metadata, data = PressureSensorParser().parseFile(request.data.get(key))
+                serializer = PressureMeasurementSerializer(data=data, many=True)
+                print(data)
+                if serializer.is_valid():
+                    serializer.save()
+                else:
+                    print(serializer.errors)
+        return Response(status=status.HTTP_200_OK)
