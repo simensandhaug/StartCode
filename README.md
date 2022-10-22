@@ -12,7 +12,7 @@ pip install -r requirements.txt
 
 ### Example
 
-- In `models.py` add the Measurement model
+1. In `models.py` add the Measurement model
 
 ```python
 from django.db import models
@@ -22,7 +22,7 @@ class ExampleMeasurement(models.Model):
     time_stamp = models.DateTimeField()
     example_attribute = models.FloatField()
 ```
-- In `serializers.py` add the MeasurementSerializer, and create a field for it in the SensorSerializer
+2. In `serializers.py` add the MeasurementSerializer, and create a field for it in the SensorSerializer
 ```python
 class ExampleMeasurementSerializer(serializers.ModelSerializer):
     class Meta:
@@ -41,7 +41,7 @@ class SensorSerializer(serializers.ModelSerializer):
 ```
 
 
-- In `views.py` add the Measurement view and update, and add the Prefetch in `get_sensors` function
+3. In `views.py` add the Measurement view and update, and add the Prefetch in `get_sensors` function
 ```python 
 class ExampleMeasurementList(APIView):
     def get(self, request, format=None):
@@ -65,7 +65,7 @@ def get_sensors(request):
     ...
 ```
 
-- In `urls.py` add the new endpoint
+4. In `urls.py` add the new endpoint
 
 ```python
 urlpatterns = [
