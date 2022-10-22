@@ -1,0 +1,5 @@
+s_id, s_type, s_sample_frequency, buoy_id
+11, echo, 10, 1
+12, pressure, 10, 1
+21, echo, 10, 2
+22, pressure, 10, 2
