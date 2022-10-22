@@ -10,6 +10,7 @@ media
 
 # venv #
 bin/
+.pyenv.cfg
 
 # Backup files # 
 *.bak 

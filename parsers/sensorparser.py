@@ -15,10 +15,12 @@ class SensorParser(ABC):
             values = [s.strip() for s in file.readline().split(",")]
             metadataDict = {headers[i]: values[i] for i in range(len(headers))}
             metadataFrame = pd.DataFrame([values], columns=headers)
-            return (metadataFrame, self.parseData(file,metadataDict))
+            parsedData =  self.parseData(file,metadataDict)
+            parsedData["id"] = metadataDict["id"]
+            return (metadataFrame, parsedData)
     
     def parseDate(self, date: str) -> datetime:
-        return datetime.strptime(date.strip(), '%a, %d %b %Y %H:%M:%S %z')
+        return datetime.strptime(date.strip(), 'sampling started at :%a, %d %b %Y %H:%M:%S %z')
 
     @abstractmethod
     def parseData(self, file:TextIOWrapper, metadata)->pd.DataFrame:
