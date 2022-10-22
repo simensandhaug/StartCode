@@ -1,0 +1,2 @@
+latitude,longitude,altitude,battery
+59.097222,9.631671,0.1,50
