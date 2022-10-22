@@ -1,3 +1,4 @@
+from asyncore import read
 from rest_framework import serializers
 from .models import *
 
@@ -52,6 +53,7 @@ class BuoyMeasurementSerializer(serializers.ModelSerializer):
         
     def create(self, data):
         return BuoyMeasurement.objects.create(**data)
+    
 class SensorMetadataSerializer(serializers.ModelSerializer):
     class Meta:
         model = SensorMetadata
@@ -66,6 +68,9 @@ class SensorSerializer(serializers.ModelSerializer):
     light_measurements = LightMeasurementSerializer(read_only=True, many=True, source='filtered_light_measurements')
     buoy_measurements = BuoyMeasurementSerializer(read_only=True, many=True, source='filtered_buoy_measurements')   
     echo_measurements = EchoLocationMeasurementSerializer(read_only=True, many=True, source='filtered_echo_measurements') 
+    
+    sensor_metadata = SensorMetadataSerializer(read_only=True, many=True, source='filtered_sensor_metadata')
+    
     class Meta:
         model = Sensor
         fields = '__all__'
