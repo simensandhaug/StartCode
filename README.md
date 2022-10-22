@@ -63,3 +63,13 @@ def get_sensors(request):
     )
     ...
 ```
+
+- In `urls.py` add the new endpoint
+
+```python
+urlpatterns = [
+    ...
+    path('measurements/example/', ExampleMeasurementList.as_view()),
+    ...
+]
+```
