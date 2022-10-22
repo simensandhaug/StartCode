@@ -16,7 +16,6 @@ from urllib.parse import unquote
 def get_sensors(request):
     start = unquote(request.query_params['start_date_time']) if 'start_date_time' in request.query_params else datetime.min
     end = unquote(request.query_params['end_date_time']) if 'end_date_time' in request.query_params else datetime.max
-    print(start, end)
     return Sensor.objects.prefetch_related(
         Prefetch('pressure_measurements', queryset=PressureMeasurement.objects.filter(Q(time_stamp__gte=start) & Q(time_stamp__lte=end)), to_attr='filtered_pressure_measurements'),
         Prefetch('light_measurements', queryset=LightMeasurement.objects.filter(Q(time_stamp__gte=start) & Q(time_stamp__lte=end)), to_attr='filtered_light_measurements'),
