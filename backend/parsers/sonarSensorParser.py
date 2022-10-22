@@ -32,7 +32,6 @@ class SonarSensorParser(SensorParser):
         startTimeDataSets = [s.split("\n") for s in fileTextDividedByStartTimes]
         startTimeDataSetsWithParsedTime = [(self.parseDate(s[0]), s[1]) for s in startTimeDataSets]
         parsedSets = [(s[0], re.findall(r"Distance: (\d+|None)\sConfidence: (?:(\d+)%|None)",s[1])) for s in startTimeDataSetsWithParsedTime]
-        print("Hello")
         parsedData = []
         for startTime, measurements in parsedSets:
             for i, measurement in enumerate(measurements):
