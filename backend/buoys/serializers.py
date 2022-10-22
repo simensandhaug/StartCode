@@ -66,7 +66,6 @@ class SensorSerializer(serializers.ModelSerializer):
     
     pressure_measurements = PressureMeasurementSerializer(read_only=True, many=True, source='filtered_pressure_measurements')
     light_measurements = LightMeasurementSerializer(read_only=True, many=True, source='filtered_light_measurements')
-    buoy_measurements = BuoyMeasurementSerializer(read_only=True, many=True, source='filtered_buoy_measurements')   
     echo_measurements = EchoLocationMeasurementSerializer(read_only=True, many=True, source='filtered_echo_measurements') 
     
     sensor_metadata = SensorMetadataSerializer(read_only=True, many=True, source='filtered_sensor_metadata')
@@ -82,6 +81,8 @@ class SensorSerializer(serializers.ModelSerializer):
 class BuoySerializer(serializers.ModelSerializer):
     
     sensors = SensorSerializer(read_only=True, many=True)
+    buoy_measurements = BuoyMeasurementSerializer(read_only=True, many=True, source='filtered_buoy_measurements')   
+
     
     class Meta:
         model = Buoy

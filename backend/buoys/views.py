@@ -20,19 +20,24 @@ def get_sensors(request):
     return Sensor.objects.prefetch_related(
         Prefetch('pressure_measurements', queryset=PressureMeasurement.objects.filter(Q(time_stamp__gte=start) & Q(time_stamp__lte=end)), to_attr='filtered_pressure_measurements'),
         Prefetch('light_measurements', queryset=LightMeasurement.objects.filter(Q(time_stamp__gte=start) & Q(time_stamp__lte=end)), to_attr='filtered_light_measurements'),
-        Prefetch('buoy_measurements', queryset=BuoyMeasurement.objects.filter(Q(time_stamp__gte=start) & Q(time_stamp__lte=end)), to_attr='filtered_buoy_measurements'),
         Prefetch('echo_measurements', queryset=EchoLocationMeasurement.objects.filter(Q(time_stamp__gte=start) & Q(time_stamp__lte=end)), to_attr='filtered_echo_measurements'),
-        Prefetch('sensor_metadata', queryset=SensorMetadata.objects.filter(Q(time_stamp__lte=end)), to_attr='filtered_sensor_metadata')
-    )  
+        Prefetch('sensor_metadata', queryset=SensorMetadata.objects.filter(Q(s_last_calibrated__lte=end)), to_attr='filtered_sensor_metadata')
+    )
+def get_buoys(request):
+    start = unquote(request.query_params['start_date_time']) if 'start_date_time' in request.query_params else datetime.min
+    end = unquote(request.query_params['end_date_time']) if 'end_date_time' in request.query_params else datetime.max
+    sensors = get_sensors(request)
+    return Buoy.objects.prefetch_related(
+        Prefetch('sensors', queryset=sensors),
+        Prefetch('buoy_measurements', queryset=BuoyMeasurement.objects.filter(Q(time_stamp__gte=start) & Q(time_stamp__lte=end)), to_attr='filtered_buoy_measurements'),
+
+    )
+
 
 class BuoyList(APIView):
 
     def get(self, request, format=None):
-        sensors = get_sensors(request)
-        buoys = Buoy.objects.prefetch_related(
-            Prefetch('sensors', queryset=sensors)
-        )
-        print(request.data)
+        buoys = get_buoys(request)
         serializer = BuoySerializer(buoys, many=True)
         return Response(serializer.data)
 
