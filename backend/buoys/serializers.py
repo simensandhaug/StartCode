@@ -30,6 +30,7 @@ class EchoLocationMeasurementSerializer(serializers.ModelSerializer):
         
     def create(self, data):
         return EchoLocationMeasurement.objects.create(**data)
+
 class PressureMeasurementSerializer(serializers.ModelSerializer):
     class Meta:
         model = PressureMeasurement
@@ -38,6 +39,14 @@ class PressureMeasurementSerializer(serializers.ModelSerializer):
     def create(self, data):
         return PressureMeasurement.objects.create(**data)
         
+class GyroscopeMeasurementSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = GyroscopeMeasurement
+        fields = '__all__'
+                
+    def create(self, data):
+        return GyroscopeMeasurement.objects.create(**data)
+
 class BuoyMeasurementSerializer(serializers.ModelSerializer):
     class Meta:
         model = BuoyMeasurement
@@ -58,7 +67,6 @@ class SensorSerializer(serializers.ModelSerializer):
     
     pressure_measurements = PressureMeasurementSerializer(read_only=True, many=True, source='filtered_pressure_measurements')
     echo_measurements = EchoLocationMeasurementSerializer(read_only=True, many=True, source='filtered_echo_measurements') 
-    
     sensor_metadata = SensorMetadataSerializer(read_only=True, many=True, source='filtered_sensor_metadata')
     
     class Meta:

@@ -40,6 +40,12 @@ class EchoLocationMeasurement(models.Model):
     distance = models.FloatField(null=True)
     confidence = models.FloatField(null=True)
     sensor = models.ForeignKey(Sensor, related_name="echo_measurements", on_delete=models.CASCADE)
+
+class GyroscopeMeasurement(models.Model):
+    time_stamp = models.DateTimeField()
+    depth = models.FloatField(null=True)
+    pressure = models.FloatField(null=True)
+    sensor = models.ForeignKey(Sensor, related_name="gyro_measurements", on_delete=models.CASCADE)
     
     
     

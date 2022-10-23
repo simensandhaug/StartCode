@@ -3,3 +3,5 @@ s_id, s_type, s_sample_frequency, buoy_id
 12, pressure, 10, 1
 21, echo, 10, 2
 22, pressure, 10, 2
+15, gyro, 10, 1
+16, gyro, 10, 2

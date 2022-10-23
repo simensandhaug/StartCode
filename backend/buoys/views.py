@@ -100,6 +100,20 @@ class EchoLocationMeasurementList(APIView):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+class GyroscopeMeasurementList(APIView):
+    
+    def get(self, request, format=None):
+        gyro_location_measurements = GyroscopeMeasurement.objects.all()
+        serializer = GyroscopeMeasurementSerializer(gyro_location_measurements, many=True)
+        return Response(serializer.data)
+
+    def post(self, request, format=None):
+        serializer = GyroscopeMeasurementSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 class PressureMeasurementList(APIView):
     
     def get(self, request, format=None):
@@ -130,7 +144,7 @@ class BuoyUpload(APIView):
                     print(serializer.errors)
             if key == "ekkolodd":
                 metadata, data = SonarSensorParser().parseFile(request.data.get(key))
-                frequency = Sensor.objects.get(s_id=metadata["id"]).s_sample_frequency
+                frequency = Sensor.objects.get(s_id=metadata["sensor"]).s_sample_frequency
                 metadata["frequency"] = frequency
                 serializer = EchoLocationMeasurementSerializer(data=data, many=True)
                 if serializer.is_valid():
@@ -139,9 +153,16 @@ class BuoyUpload(APIView):
                     print(serializer.errors)
             elif key == "gyroskop":
                 metadata, data = GyroscopeSensorParser().parseFile(request.data.get(key))
+                frequency = Sensor.objects.get(s_id=metadata["sensor"]).s_sample_frequency
+                metadata["frequency"] = frequency
+                serializer = GyroscopeMeasurementSerializer(data=data, many=True)
+                if serializer.is_valid():
+                    serializer.save()
+                else:
+                    print(serializer.errors)
             elif key == "trykksensor":
                 metadata, data = PressureSensorParser().parseFile(request.data.get(key))
-                frequency = Sensor.objects.get(s_id=metadata["id"]).s_sample_frequency
+                frequency = Sensor.objects.get(s_id=metadata["sensor"]).s_sample_frequency
                 metadata["frequency"] = frequency
                 serializer = PressureMeasurementSerializer(data=data, many=True)
                 if serializer.is_valid():
