@@ -22,13 +22,6 @@ from .models import *
 #     def create(self, data):
 #         return Measurement.objects.create(**data)
 
-class LightMeasurementSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = LightMeasurement
-        fields = '__all__'
-        
-    def create(self, data):
-        return LightMeasurement.objects.create(**data)
         
 class EchoLocationMeasurementSerializer(serializers.ModelSerializer):
     class Meta:
@@ -64,7 +57,6 @@ class SensorMetadataSerializer(serializers.ModelSerializer):
 class SensorSerializer(serializers.ModelSerializer):
     
     pressure_measurements = PressureMeasurementSerializer(read_only=True, many=True, source='filtered_pressure_measurements')
-    light_measurements = LightMeasurementSerializer(read_only=True, many=True, source='filtered_light_measurements')
     echo_measurements = EchoLocationMeasurementSerializer(read_only=True, many=True, source='filtered_echo_measurements') 
     
     sensor_metadata = SensorMetadataSerializer(read_only=True, many=True, source='filtered_sensor_metadata')

@@ -24,7 +24,6 @@ urlpatterns = [
     path('sensor/<int:pk>/', SensorDetail.as_view()),
     path('buoy/<int:pk>/', BuoyDetail.as_view()),
     path('buoy/<int:pk>/upload/', BuoyUpload.as_view()),
-    path('measurements/light/', LightMeasurementList.as_view()),
     path('measurements/buoy/', BuoyMeasurementList.as_view()),
     path('measurements/pressure/', PressureMeasurementList.as_view()),
     path('measurements/echo/', EchoLocationMeasurementList.as_view()),

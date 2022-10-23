@@ -8,7 +8,7 @@ media
 
 # venv #
 bin/
-.pyenv.cfg
+.pyvenv.cfg
 
 # Backup files # 
 *.bak 

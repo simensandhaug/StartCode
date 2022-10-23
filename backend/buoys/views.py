@@ -15,7 +15,6 @@ def get_sensors(request):
     end = unquote(request.query_params['end_date_time']) if 'end_date_time' in request.query_params else datetime.max
     return Sensor.objects.prefetch_related(
         Prefetch('pressure_measurements', queryset=PressureMeasurement.objects.filter(Q(time_stamp__gte=start) & Q(time_stamp__lte=end)), to_attr='filtered_pressure_measurements'),
-        Prefetch('light_measurements', queryset=LightMeasurement.objects.filter(Q(time_stamp__gte=start) & Q(time_stamp__lte=end)), to_attr='filtered_light_measurements'),
         Prefetch('echo_measurements', queryset=EchoLocationMeasurement.objects.filter(Q(time_stamp__gte=start) & Q(time_stamp__lte=end)), to_attr='filtered_echo_measurements'),
         Prefetch('sensor_metadata', queryset=SensorMetadata.objects.filter(Q(s_last_calibrated__lte=end)), to_attr='filtered_sensor_metadata')
     )
@@ -60,11 +59,9 @@ class SensorList(APIView):
     
 class BuoyDetail(APIView):
     def get(self, request, pk, format=None):
-        sensors = get_sensors(request)
-        buoys = Buoy.objects.prefetch_related(
-            Prefetch('sensors', queryset=sensors)
-        )
+        buoys = get_buoys(request)
         buoy = buoys.get(b_id=pk)
+        print(buoys)
         serializer = BuoySerializer(buoy)
         return Response(serializer.data)
 
@@ -74,20 +71,6 @@ class SensorDetail(APIView):
         sensor = sensors.get(s_id=pk)
         serializer = SensorSerializer(sensor)
         return Response(serializer.data)
-
-class LightMeasurementList(APIView):
-    
-    def get(self, request, format=None):
-        light_measurements = LightMeasurement.objects.all()
-        serializer = LightMeasurementSerializer(light_measurements, many=True)
-        return Response(serializer.data)
-
-    def post(self, request, format=None):
-        serializer = LightMeasurementSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class BuoyMeasurementList(APIView):
     
