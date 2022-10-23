@@ -54,7 +54,7 @@ class SensorSerializer(serializers.ModelSerializer):
 ```
 
 
-3. In `views.py` add the Measurement view and update, and add the Prefetch in `get_sensors` function
+3. In `views.py` add the Measurement view and update the prefetch in the `get_sensors` function
 ```python 
 class ExampleMeasurementList(APIView):
     def get(self, request, format=None):
