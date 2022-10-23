@@ -48,7 +48,7 @@ class GyroscopeSensorParser(SensorParser):
             for i, measurement in enumerate(measurements):
                 currentTime = startTime + i * timedelta(seconds=1/float(metadata["frequency"]))
                 parsedMeasurement = {"time_stamp": currentTime}
-                _, depth, pressure = list(measurement[1:])
+                _, depth, pressure = list(measurement)
                 parsedMeasurement["depth"] = depth
                 parsedMeasurement["pressure"] = pressure
                 parsedData.append(parsedMeasurement)
