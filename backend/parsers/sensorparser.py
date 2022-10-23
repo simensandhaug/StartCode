@@ -15,17 +15,17 @@ class SensorParser(ABC):
         headers = [s.strip() for s in file.readline().decode("utf-8").split(",")]
         values = [s.strip() for s in file.readline().decode("utf-8").split(",")]
         metadata = {headers[i]: values[i] for i in range(len(headers))}
-        metadataToSave = {"s_id": metadata["id"], "s_last_calibrated": datetime.fromtimestamp(int(metadata["last_calibrated"])), "s_calibration_error": metadata["calibration_error"]}
+        metadataToSave = {"sensor": metadata["sensor"], "s_last_calibrated": datetime.fromtimestamp(int(metadata["last_calibrated"])), "s_calibration_error": metadata["calibration_error"]}
         serializer = SensorMetadataSerializer(data=metadataToSave)
         if serializer.is_valid():
             serializer.save()
         else:
             print(serializer.errors)
-        frequency = Sensor.objects.get(s_id=metadata["id"]).s_sample_frequency
+        frequency = Sensor.objects.get(s_id=metadata["sensor"]).s_sample_frequency
         metadata["frequency"] = frequency
         parsedData =  self.parseData([line.decode("utf-8") for line in file.readlines()],metadata)
         for dataPoint in parsedData:
-            dataPoint["sensor"] = int(metadata["id"])
+            dataPoint["sensor"] = int(metadata["sensor"])
         return (metadata, parsedData)
     
     def parseDate(self, date: str) -> datetime:
