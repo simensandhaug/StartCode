@@ -147,7 +147,7 @@ class BuoyUpload(APIView):
                     print(serializer.errors)
             if key == "ekkolodd":
                 metadata, data = SonarSensorParser().parseFile(request.data.get(key))
-                frequency = Sensor.objects.get(s_id=metadata["id"]).s_sample_frequency
+                frequency = Sensor.objects.get(s_id=metadata["sensor"]).s_sample_frequency
                 metadata["frequency"] = frequency
                 serializer = EchoLocationMeasurementSerializer(data=data, many=True)
                 if serializer.is_valid():
@@ -158,7 +158,7 @@ class BuoyUpload(APIView):
                 metadata, data = GyroscopeSensorParser().parseFile(request.data.get(key))
             elif key == "trykksensor":
                 metadata, data = PressureSensorParser().parseFile(request.data.get(key))
-                frequency = Sensor.objects.get(s_id=metadata["id"]).s_sample_frequency
+                frequency = Sensor.objects.get(s_id=metadata["sensor"]).s_sample_frequency
                 metadata["frequency"] = frequency
                 serializer = PressureMeasurementSerializer(data=data, many=True)
                 if serializer.is_valid():
