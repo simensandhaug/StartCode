@@ -60,6 +60,16 @@ class Migration(migrations.Migration):
             ],
         ),
         migrations.CreateModel(
+            name='GyroscopeMeasurement',
+            fields=[
+                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('time_stamp', models.DateTimeField()),
+                ('depth', models.FloatField(null=True)),
+                ('pressure', models.FloatField(null=True)),
+                ('sensor', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='gyro_measurements', to='buoys.sensor')),
+            ],
+        ),
+        migrations.CreateModel(
             name='EchoLocationMeasurement',
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
