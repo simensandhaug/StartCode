@@ -1,4 +1,3 @@
-import pandas as pd
 from datetime import timedelta
 import ast
 
@@ -43,12 +42,14 @@ class GyroscopeSensorParser(SensorParser):
             if(line_len > 0):
                 measurementPairs.append([sample_start_parsed, line])
 
-        # Convert to a pandas dataframe
+        # Convert to a list of dicts
         parsedData = []
         for startTime, measurements in measurementPairs:
             for i, measurement in enumerate(measurements):
                 currentTime = startTime + i * timedelta(seconds=1/float(metadata["frequency"]))
-                #print(currentTime)
-                splitISDP = [currentTime] + list(measurement[1:])
-                parsedData.append(splitISDP)
-        return pd.DataFrame(parsedData, columns=["time", "depth in meters", "absolute pressure in bar"])
+                parsedMeasurement = {"time_stamp": currentTime}
+                _, depth, pressure = list(measurement[1:])
+                parsedMeasurement["depth"] = depth
+                parsedMeasurement["pressure"] = pressure
+                parsedData.append(parsedMeasurement)
+        return parsedData
