@@ -27,4 +27,5 @@ urlpatterns = [
     path('measurements/buoy/', BuoyMeasurementList.as_view()),
     path('measurements/pressure/', PressureMeasurementList.as_view()),
     path('measurements/echo/', EchoLocationMeasurementList.as_view()),
+    path('measurements/gyro/', GyroscopeMeasurementList.as_view()),
 ]
