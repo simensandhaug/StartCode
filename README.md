@@ -2,17 +2,17 @@
 
 Our solution writes metadata and sensor-measurements into the database from a file that is posted via HTTP to the server and provides a REST-API for querying the data for easy frontend integration.
 
-## Install Requirements
-
-```bash
-pip install -r requirements.txt
-```
-
 ## Activate Virtual Environment
 
 ```bash
 python -m venv venv
 source venv/bin/activate
+```
+
+## Install Requirements
+
+```bash
+pip install -r requirements.txt
 ```
 
 ## Initialize Database
