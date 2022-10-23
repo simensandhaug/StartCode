@@ -170,7 +170,7 @@ class BuoyUpload(APIView):
                     print(serializer.errors)
             elif key == "gyroskop":
                 metadata, data = GyroscopeSensorParser().parseFile(request.data.get(key))
-                frequency = Sensor.objects.get(s_id=metadata["id"]).s_sample_frequency
+                frequency = Sensor.objects.get(s_id=metadata["sensor"]).s_sample_frequency
                 metadata["frequency"] = frequency
                 serializer = GyroscopeMeasurementSerializer(data=data, many=True)
                 if serializer.is_valid():
