@@ -1,13 +1,9 @@
-from curses import meta
 from datetime import datetime
-import re
-from urllib import request
 from parsers.gyroscopeSensorParser import GyroscopeSensorParser
 from parsers.pressureSensorParser import PressureSensorParser
 from parsers.sonarSensorParser import SonarSensorParser
 from .models import Buoy, Sensor
 from .serializers import *
-from django.http import Http404
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
