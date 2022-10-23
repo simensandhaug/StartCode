@@ -12,7 +12,7 @@ pip install -r requirements.txt
 
 ```bash
 python -m venv venv
-venv/bin/activate
+source venv/bin/activate
 ```
 
 ## Initialize Database
